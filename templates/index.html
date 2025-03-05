@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sentiment Analysis</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Sentiment Analysis</h1>
+    
+    <!-- Individual Comment Analysis Form -->
+    <form action="/" method="post" class="comment-form">
+      <label for="Comment">Enter your comment:</label>
+      <textarea id="Comment" name="Comment" rows="4" placeholder="Type your comment here..." required>
+{{ original_comment if original_comment is defined else '' }}
+      </textarea>
+      
+      <label for="model">Select Model:</label>
+      <select id="model" name="model">
+        <option value="lightgbm" {% if model_choice == 'lightgbm' %}selected{% endif %}>LightGBM</option>
+        <option value="random_forest" {% if model_choice == 'random_forest' %}selected{% endif %}>Random Forest</option>
+      </select>
+      
+      <button type="submit">Analyze Sentiment</button>
+    </form>
+    
+    <!-- Display Prediction Result -->
+    {% if result %}
+      <div class="result">
+        <h2>Prediction Result</h2>
+        <p><strong>Comment:</strong> {{ original_comment }}</p>
+        <p><strong>Sentiment:</strong> {{ result }}</p>
+      </div>
+    {% endif %}
+    
+    <!-- Batch File Processing Form -->
+    <form action="/" method="post" enctype="multipart/form-data" class="batch-form">
+      <label for="file">Upload CSV/JSON File:</label>
+      <input type="file" id="file" name="file" accept=".csv, .json" required>
+      <button type="submit">Process Batch File</button>
+    </form>
+    
+   
+</body>
+</html>
